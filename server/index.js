@@ -1,7 +1,8 @@
 import express from "express"
 import cors from "cors"
-import app from "./server.js"
+import server from "./server.js"
 import { MongoClient, ServerApiVersion } from "mongodb"
+import UsersDAO from "./dao/usersDAO.js"
 
 const mongo_username = process.env["MONGODB_USERNAME"]
 const mongo_password = process.env["MONGODB_PASSWORD"]
@@ -19,8 +20,9 @@ mongo_client.connect().catch(err => {
     console.error(err.stack)
     process.exit(1)
 }).then(async client => {
-    app.listen(port, () => {
-        console.log(`Server started on port ${port}`)
-    })
+  await UsersDAO.injectDB(client)
+  server.listen(port, () => {
+      console.log(`Server started on port ${port}`)
+  })
 })
 

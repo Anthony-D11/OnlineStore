@@ -1,16 +1,16 @@
 import express from "express"
 import cors from "cors"
-import reviews from "./api/reviews.route.js"
+import users from "./api/users.route.js"
 
-const app = express()
+const server = express()
 
-app.use(cors())
-app.use(express.json())
+server.use(cors())
+server.use(express.json())
 
-app.use("/api/v1/reviews", reviews)
+server.use("/api/v1/users", users)
 
-app.use("*", (req, res) => {
+server.use("*", (req, res) => {
     res.status(404).json({error: "not found"})
 })
 
-export default app
+export default server
