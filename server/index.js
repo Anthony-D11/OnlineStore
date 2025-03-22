@@ -22,7 +22,7 @@ mongo_client.connect().catch(err => {
 }).then(async client => {
   await UsersDAO.injectDB(client)
   server.listen(port, () => {
-      console.log(`Server started on port ${port}`)
+      console.log(`Server listening on port ${port}`)
   })
 })
 
