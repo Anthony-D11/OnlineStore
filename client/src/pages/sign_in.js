@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from 'axios'
 import $ from 'jquery';
-import NavBar from "../components/nav_bar/nav_bar";
 
 const SignIn = () => {
     const api_url = "http://localhost:4000/api/v1/users/sign-in";
@@ -28,6 +27,7 @@ const SignIn = () => {
             setPassword("");
             alert("Sign in successfully!");
             navigate("/");
+            window.location.reload();
 
         } catch(error) {
             $(".statusText").text(error);
@@ -39,7 +39,6 @@ const SignIn = () => {
 
     return (
         <>
-            <NavBar/>
             <div className="section-section container">
                 <div className="sign-in-container">
                     <div className="sign-in-wrapper">

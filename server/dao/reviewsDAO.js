@@ -14,29 +14,40 @@ export default class ReviewsDAO {
             console.error(`Unable to establish collection handles in reviewsDAO: ${err}`)
         }
     }
-    static async addReview(userId, productId, rating, comment) {
+    static addReview(username, productId, rating, comment) {
         try{
             const reviewDoc = {
-                user_id: userId,
+                username: username,
                 product_id: productId,
                 rating: rating,
                 comment: comment 
             }
-            return await reviews.insertOne(reviewDoc)
+            return reviews.insertOne(reviewDoc)
         } catch(err) {
             console.error(`Unable to add review: ${err}`)
             return {"error": e}
         }
 
     }
-    static async updateReview(reviewId, rating, comment) {
+    static updateReview(reviewId, rating, comment) {
         try{
-            return await reviews.updateOne(
+            return reviews.updateOne(
                 {_id: ObjectId(reviewId)},
                 {$set: {rating: rating, comment: comment}}
             )
         } catch(err) {
             console.error(`Unable to update review: ${err}`)
+            return {"error": e}
+        }
+
+    }
+    static listReviews(productId) {
+        try{
+            return reviews.find(
+                {product_id: productId}
+            )
+        } catch(err) {
+            console.error(`Unable to list reviews for product ${productId}: ${err}`)
             return {"error": e}
         }
 

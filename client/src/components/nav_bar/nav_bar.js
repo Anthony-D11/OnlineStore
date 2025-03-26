@@ -2,7 +2,7 @@ import React, {useState, useEffect} from "react";
 
 import './nav_bar.css';
 import {Link} from "react-router-dom";
-import { checkLoginStatus } from "../../auth";
+import { useAuth } from "../../auth";
 import axios from "axios";
 
 const base_url = "http://localhost:4000/api/v1/users";
@@ -10,7 +10,8 @@ const base_url = "http://localhost:4000/api/v1/users";
 function NavBar() {
     const [scrolled, setNavBar] = useState(false);
     const [smallScreen, setSmall] = useState(false);
-    const [userState, setUserState] = useState({});
+    let {userState, setUserState} = useAuth();
+
     window.addEventListener("scroll", (event) => {
         if (window.scrollY > 0) setNavBar(true);
         else setNavBar(false);

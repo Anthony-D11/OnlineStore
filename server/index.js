@@ -4,6 +4,7 @@ import server from "./server.js"
 import { MongoClient, ServerApiVersion } from "mongodb"
 import UsersDAO from "./dao/usersDAO.js"
 import ProductsDAO from "./dao/productsDAO.js"
+import ReviewsDAO from "./dao/reviewsDAO.js"
 
 const mongo_username = process.env["MONGODB_USERNAME"]
 const mongo_password = process.env["MONGODB_PASSWORD"]
@@ -23,6 +24,8 @@ mongo_client.connect().catch(err => {
 }).then(async client => {
   await UsersDAO.injectDB(client)
   await ProductsDAO.injectDB(client)
+  await ReviewsDAO.injectDB(client)
+
   server.listen(port, () => {
       console.log(`Server listening on port ${port}`)
   })

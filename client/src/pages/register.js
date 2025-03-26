@@ -8,6 +8,7 @@ function Register () {
     const [name, setName] = useState("");
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    const navigate = useNavigate();
 
     const handleRegister = async (event) => {
         event.preventDefault();
@@ -28,6 +29,7 @@ function Register () {
             setUsername("");
             setPassword("");
             alert("User created!");
+            navigate("/sign-in");
 
         } catch(error) {
             $(".statusText").text(error);
