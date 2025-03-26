@@ -1,38 +1,297 @@
-.App {
-  text-align: center;
+.section-section {
+  padding-top: 3.5rem;
 }
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.favorite-movies-header {
+  text-align: left;
+  margin: 20px 0;
+  background-color: #f5f4f4;
 }
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #666;
+  display: inline-block;
+  margin: auto 5px;
 }
-
-.App-header {
-  background-color: #282c34;
+.favorite-icon:hover {
+  cursor: pointer;
+}
+footer {
+  height: 4.5rem;
+  margin-top: auto;
+}
+#root {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+}
+
+.favorite-movies-header .selection-tab .active::after {
+  width: calc(100% - 1.5rem);
+}
+.favorite-movies-header .selection-tab .active {
+  border: 0;
+}
+.favorite-movies-header .selection-tab button::after {
+  background:cornflowerblue;
+  border-radius: 16px;
+  content: "";
+  display: block;
+  width: 0px;
+  height: 3px;
+  left: 0.75rem;
+  bottom: 0;
+  position: absolute;
+  transition: all .3s ease-out 0s;
+  z-index: -1;
+}
+.favorite-movies-header .selection-tab button:hover::after {
+  width: calc(100% - 1.5rem);
+  transition: all .3s ease-out 0s;
+}
+.favorite-movies-header .selection-tab {
+  margin-bottom: 20px;
+}
+.favorite-movies-footer {
+  width: fit-content;
+  height: fit-content;
+  margin: 0 auto 20px;
+}
+.favorite-movies-footer .pagination {
+  display: inline-block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 20px;
+}
+
+.favorite-movies-footer .pagination div {
+  color: black;
+  float: left;
+  padding: 8px 16px;
+  text-decoration: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.favorite-movies-footer .pagination div.active {
+  background-color: cornflowerblue;
   color: white;
 }
 
-.App-link {
-  color: #61dafb;
+.favorite-movies-footer .pagination div:hover:not(.active) {background-color: #ddd;}
+
+.favorite-movies-header .pagination {
+  display: inline-block;
+  margin: 20px auto;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.favorite-movies-header .pagination div {
+  color: black;
+  float: left;
+  padding: 8px 16px;
+  text-decoration: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.favorite-movies-header .pagination div.active {
+  background-color: cornflowerblue;
+  color: white;
+}
+
+.favorite-movies-header .pagination div:hover:not(.active) {background-color: #ddd;}
+
+.product-image {
+  width: 100%;
+  height: 100%;
+  max-height: 100%;
+  max-width: 100%;
+  object-fit: contain;
+  display: inline-block;
+  border-radius: 1rem;
+}
+.product-details .price {
+  font-size: 1.75rem;
+  font-weight: 700;
+  line-height: 1.33;
+  display: inline-block;
+}
+.product-details .buy-button {
+  background-color: #3665f3;
+  border-radius: 24px;
+  border: 0;
+  color: white;
+  font-weight: 700;
+  height: 50px;
+  
+}
+.product-details .buy-form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.product-details .quantity {
+  width: 50%;
+  border-radius: 8px;
+  height: 50px;
+  width: 100px;
+  margin: 0 10px;
+}
+.product-details .quantity-container {
+  margin: 20px 0;
+}
+.product-details {
+  font-size: 1.2rem;
+  margin: 50px 0;
+}
+.product-reviews .reviewer-name {
+  font-weight: 700;
+  font-size: 16px;
+}
+.product-reviews .review-item {
+  margin: 15px 0;
+}
+.product-details .product-column {
+  padding: 0 40px;
+}
+.add-comment textarea {
+  width: 100%;
+  min-height: 100px;
+  margin: 10px 0;
+}
+.add-comment button {
+  width: 100px;
+  border-radius: 24px;
+  border: 0;
+  background-color: #3665f3;
+  color: white;
+  font-weight: 700;
+  height: 30px;
+}
+.sign-in-header {
+  font-size: 30px;
+  font-weight: 700;
+  color: #403866;
+  line-height: 1.2;
+  text-transform: uppercase;
+  text-align: center;
+  width: 100%;
+  display: block;
+  padding-bottom: 51px;
+}
+.sign-in-container {
+  margin: 40px auto;
+  width: 100%;
+  min-height: 80vh;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+
+}
+
+.sign-in{
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  margin: 10px auto;
+  width: 50%;
+}
+.sign-in input{
+  background-color: #e6e6e6;
+  border: 1px solid transparent;
+  border-radius: 3px;
+  width: 100%;
+  height: 62px;
+  font-size: 18px;
+  margin-bottom: 16px;
+  padding: 0 20px;
+}
+.sign-in button{
+  font-size: 16px;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.2;
+  text-transform: uppercase;
+  padding: 0 20px;
+  width: 100%;
+  height: 62px;
+  background-color: #827ffe;
+  border-radius: 3px;
+  margin-bottom: 16px;
+  border: 0;
+}
+.sign-in .register-link {
+  color: #827ffe;
+  font-size: 18px;
+  text-align: center;
+  width: 100%;
+
+}
+
+.register-header {
+  font-size: 30px;
+  font-weight: 700;
+  color: #403866;
+  line-height: 1.2;
+  text-transform: uppercase;
+  text-align: center;
+  width: 100%;
+  display: block;
+  padding-bottom: 51px;
+}
+.register-container {
+  margin: 40px auto;
+  width: 100%;
+  min-height: 80vh;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+
+}
+
+.register{
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  margin: 10px auto;
+  width: 50%;
+}
+.register input{
+  background-color: #e6e6e6;
+  border: 1px solid transparent;
+  border-radius: 3px;
+  width: 100%;
+  height: 62px;
+  font-size: 18px;
+  margin-bottom: 16px;
+  padding: 0 20px;
+}
+.register button{
+  font-size: 16px;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.2;
+  text-transform: uppercase;
+  padding: 0 20px;
+  width: 100%;
+  height: 62px;
+  background-color: #827ffe;
+  border-radius: 3px;
+  margin-bottom: 16px;
+  border: 0;
+}
+.register .register-link {
+  color: #827ffe;
+  font-size: 18px;
+  text-align: center;
+  width: 100%;
+}
+.statusText.error {
+  color: rgb(238, 91, 91);
+}
+.statusText.success {
+  color: rgb(4, 196, 4);
 }

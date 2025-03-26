@@ -1,5 +1,4 @@
-import mongodb from "mongodb"
-const ObjectId = mongodb.ObjectId
+import {ObjectId} from "mongodb"
 
 let products;
 
@@ -39,5 +38,21 @@ export default class ProductsDAO {
             return {"error": e}
         }
 
+    }
+    static listProducts() {
+        try{
+            return products.find({});
+        } catch(err) {
+            console.error(`Unable to list products: ${err}`)
+            return {"error": e}
+        }
+    }
+    static getProduct(productId) {
+        try{
+            return products.findOne({_id: ObjectId.createFromHexString(productId)});
+        } catch(err) {
+            console.error(`Unable to get the information of product ${productId}: ${err}`)
+            return {"error": e}
+        }
     }
 }
