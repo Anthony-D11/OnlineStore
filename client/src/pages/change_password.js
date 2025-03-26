@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from 'axios'
 import $ from 'jquery';
+import validateInput from "../input_validation";
 
 export default function ChangePassword () {
     const api_url = "http://localhost:4000/api/v1/users/change-password";
@@ -12,6 +13,21 @@ export default function ChangePassword () {
 
     const handleChangePassword = async (event) => {
         event.preventDefault();
+        let validationResult = validateInput("username", username);
+        if (!validationResult.isValid) {
+            alert(validationResult.error);
+            return;
+        }
+        validationResult = validateInput("password", oldPassword);
+        if (!validationResult.isValid) {
+            alert(validationResult.error);
+            return;
+        }
+        validationResult = validateInput("password", newPassword);
+        if (!validationResult.isValid) {
+            alert(validationResult.error);
+            return;
+        }
         try {
             let payload = {
                 "username": username,

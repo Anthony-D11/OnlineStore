@@ -2,41 +2,48 @@ import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from 'axios'
 import $ from 'jquery';
+import validateInput from "../input_validation";
 
-const SignIn = () => {
+export default function SignIn() {
     const api_url = "http://localhost:4000/api/v1/users/sign-in";
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
 
-    const handleSignIn = async (event) => {
+    const handleSignIn = (event) => {
         event.preventDefault();
+        let validationResult = validateInput("username", username);
+        if (!validationResult.isValid) {
+            alert(validationResult.error);
+            return;
+        }
+        validationResult = validateInput("password", password);
+        if (!validationResult.isValid) {
+            alert(validationResult.error);
+            return;
+        }
         try {
             let payload = {
                 "username": username,
                 "password": password
             }
-            const response = await axios.post(api_url, payload, {withCredentials: true});
-            if (response.status != 200) {
-                throw response.statusText;
-            }
-            $(".statusText").text(response.statusText);
-            $(".statusText").removeClass("error");
-            $(".statusText").addClass("success");
-            setUsername("");
-            setPassword("");
-            alert("Sign in successfully!");
-            navigate("/");
-            window.location.reload();
+            axios.post(api_url, payload, {withCredentials: true}).then((response) => {
+                if (response.status != 200) {
+                    throw response.statusText;
+                }
+                setUsername("");
+                setPassword("");
+                alert("Sign in successfully!");
+                navigate("/");
+                window.location.reload();
+            })
+            
 
         } catch(error) {
-            $(".statusText").text(error);
-            $(".statusText").removeClass("success");
-            $(".statusText").addClass("error");
             console.error(`Error registering user: ${error}`);
         }
     }
-
+    
     return (
         <>
             <div className="section-section container">
@@ -48,7 +55,6 @@ const SignIn = () => {
                             <input type="text" name="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)}/>
                             <button type="submit">Sign In</button>
                             <a className="register-link" href="/register"> Register?</a>
-                            <span className="statusText"></span>
                         </form>
                     </div>
                 </div>
@@ -56,4 +62,3 @@ const SignIn = () => {
         </>
     )
 }
-export default SignIn;

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { useAuth } from "../auth";
+import validateInput from "../input_validation";
 
 const base_url = "http://localhost:4000/api/v1"
 let defaultProductImage = require('../assets/default_product_image.jpg');
@@ -36,6 +37,11 @@ export default function ProductPage() {
 
     const handleAddReview = (event) => {
         event.preventDefault();
+        let validationResult = validateInput("general", newReview);
+        if (!validationResult.isValid) {
+            alert(validationResult.error);
+            return;
+        }
         const payload = {
             "product_id": product_id,
             "username": userState.user.username,
@@ -47,6 +53,11 @@ export default function ProductPage() {
             window.location.reload();
         })
         .catch((err) => {console.error(err)});
+    }
+
+    const handleBuy = (event) => {
+        event.preventDefault();
+        
     }
 
     return (
@@ -62,10 +73,10 @@ export default function ProductPage() {
                                 <div className="">
                                     <h2>{product["name"]}</h2>
                                 </div>
-                                <div className="description">Product details: {product["description"]}</div>
+                                <div className="description">{product["description"]}</div>
                                 <div className="price">${product["price"]}</div>
                                 <div className="stock">In stock: {product["quantity"]}</div>
-                                <form className="buy-form">
+                                <form className="buy-form" onSubmit={handleBuy}>
                                     <div className="quantity-container">
                                         <label>
                                             Quantity: <input className="quantity" type="number" name="quantity" />

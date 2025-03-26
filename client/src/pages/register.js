@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from 'axios'
 import $ from 'jquery';
+import validateInput from "../input_validation";
 
 function Register () {
     const api_url = "http://localhost:4000/api/v1/users/register";
@@ -12,6 +13,21 @@ function Register () {
 
     const handleRegister = async (event) => {
         event.preventDefault();
+        let validationResult = validateInput("general", name);
+        if (!validationResult.isValid) {
+            alert(validationResult.error);
+            return;
+        }
+        validationResult = validateInput("username", username);
+        if (!validationResult.isValid) {
+            alert(validationResult.error);
+            return;
+        }
+        validationResult = validateInput("password", password);
+        if (!validationResult.isValid) {
+            alert(validationResult.error);
+            return;
+        }
         try {
             let payload = {
                 "name": name,
