@@ -48,7 +48,7 @@ export default function ProductPage() {
             "rating": 5,
             "comment": newReview
         }
-        axios.post(base_url + "/reviews/add", payload)
+        axios.post(base_url + "/reviews/add", payload, {withCredentials: true})
         .then((res) => {
             window.location.reload();
         })

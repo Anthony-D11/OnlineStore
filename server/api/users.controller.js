@@ -1,6 +1,7 @@
 import UsersDAO from "../dao/usersDAO.js"
 import bcrypt from "bcryptjs"
 import jwt from "jsonwebtoken"
+import validateInput from "../input_validation.js";
 
 const JWT_SECRET_KEY = process.env["JWT_SECRET_KEY"];
 const salt_length = 12;
@@ -11,21 +12,27 @@ export default class UsersCtrl {
             const name = req.body.name
             const userName = req.body.username
             const password = req.body.password
+
+            let validationResult = validateInput("general", name);
+            if (!validationResult.isValid) {
+                return res.status(400).json({status: validationResult.error, message: "Invalid input"})
+            }
+            validationResult = validateInput("username", userName);
+            if (!validationResult.isValid) {
+                return res.status(400).json({status: validationResult.error, message: "Invalid input"})
+            }
+            validationResult = validateInput("password", password);
+            if (!validationResult.isValid) {
+                return res.status(400).json({status: validationResult.error, message: "Invalid input"})
+            }
+
+            const findUserResponse = await UsersDAO.findUserByUsername(userName);
+            if (findUserResponse) {
+                return res.status(409).json({status: error, message: "User with this username already exists"})
+            }
+
             const passwordHash = await bcrypt.hash(password, salt_length);
-            const userResponse = await UsersDAO.addUser(name, userName, passwordHash);
-            res.json({"status": "success"})
-        }
-        catch(err) {
-            res.status(500).json({"error": err})
-        }
-    }
-    static async updateUser(req, res, next) {
-        try {
-            const userId = req.params.userid
-            const name = req.body.name
-            const userName = req.body.username
-            const password = req.body.password
-            const userResponse = await UsersDAO.updateUser(userId, name, userName, password)
+            const addUserResponse = await UsersDAO.addUser(name, userName, passwordHash);
             res.json({"status": "success"})
         }
         catch(err) {
@@ -36,7 +43,15 @@ export default class UsersCtrl {
         try {
             const userName = req.body.username
             const password = req.body.password
-            const userResponse = await UsersDAO.findUserByUsername(userName)
+            let validationResult = validateInput("username", userName);
+            if (!validationResult.isValid) {
+                return res.status(400).json({status: validationResult.error, message: "Invalid input"})
+            }
+            validationResult = validateInput("password", password);
+            if (!validationResult.isValid) {
+                return res.status(400).json({status: validationResult.error, message: "Invalid input"})
+            }
+            const userResponse = await UsersDAO.findUserByUsername(userName);
             if (!userResponse || !bcrypt.compareSync(password, userResponse["password_hash"])) {
                 return res.status(401).json({ "message": "Invalid credentials" });
             }
@@ -50,7 +65,7 @@ export default class UsersCtrl {
                 httpOnly: true,
                 secure: true,
                 sameSite: "strict",
-                maxAge: 3600 * 1000
+                maxAge: 3600 * 24
             });
             res.json({"message": "Login successful"});
         }
@@ -74,6 +89,19 @@ export default class UsersCtrl {
             const userName = req.body.username
             const oldPassword = req.body.old_password
             const newPassword = req.body.new_password
+            let validationResult = validateInput("username", userName);
+            if (!validationResult.isValid) {
+                return res.status(400).json({status: validationResult.error, message: "Invalid input"})
+            }
+            validationResult = validateInput("password", oldPassword);
+            if (!validationResult.isValid) {
+                return res.status(400).json({status: validationResult.error, message: "Invalid input"})
+            }
+            validationResult = validateInput("password", newPassword);
+            if (!validationResult.isValid) {
+                return res.status(400).json({status: validationResult.error, message: "Invalid input"})
+            }
+            
             const findUserResponse = await UsersDAO.findUserByUsername(userName)
 
             if (!findUserResponse || !bcrypt.compareSync(oldPassword, findUserResponse["password_hash"])) {
@@ -87,12 +115,12 @@ export default class UsersCtrl {
                 "username": userName
             }
             res.clearCookie("token");
-            const token = jwt.sign(payload, JWT_SECRET_KEY, {"expiresIn": "2h"})
+            const token = jwt.sign(payload, JWT_SECRET_KEY, {"expiresIn": "1d"})
             res.cookie("token", token, {
                 httpOnly: true,
                 secure: true,
                 sameSite: "strict",
-                maxAge: 3600 * 1000
+                maxAge: 3600 * 24
             });
             res.json({"message": "Change password successful"});
         }
@@ -110,7 +138,7 @@ export default class UsersCtrl {
             }
             try {
                 const decoded = jwt.verify(token, JWT_SECRET_KEY);
-                res.json({"name": decoded["name"], username: decoded["username"] });
+                res.json({name: decoded["name"], username: decoded["username"] });
             } catch (error) {
                 res.status(401).json({ message: 'Invalid or expired token' });
             }
