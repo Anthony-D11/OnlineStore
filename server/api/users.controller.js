@@ -65,7 +65,7 @@ export default class UsersCtrl {
                 httpOnly: true,
                 secure: true,
                 sameSite: "strict",
-                maxAge: 3600 * 24
+                maxAge: 3600 * 600 * 24
             });
             res.json({"message": "Login successful"});
         }
@@ -120,7 +120,7 @@ export default class UsersCtrl {
                 httpOnly: true,
                 secure: true,
                 sameSite: "strict",
-                maxAge: 3600 * 24
+                maxAge: 3600 * 600 * 24
             });
             res.json({"message": "Change password successful"});
         }

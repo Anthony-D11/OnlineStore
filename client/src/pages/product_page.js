@@ -1,7 +1,6 @@
-import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useContext, useEffect, useState } from "react";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
-import { useAuth } from "../auth";
 import validateInput from "../input_validation";
 
 const base_url = "http://localhost:4000/api/v1"
@@ -12,8 +11,9 @@ export default function ProductPage() {
     const [reviews, setReviews] = useState([{}]);
     const [product, setProduct] = useState({})
     const [newReview, setNewReview] = useState("");
-    let {userState, setUserState} = useAuth();
-    
+    const [ userState, setUserState ] = useState({});
+    const location = useLocation();
+
     const { product_id } = useParams();
 
     const fetchProductDetails = () => {
@@ -30,10 +30,24 @@ export default function ProductPage() {
             setReviews(res.data.reviews);
         });
     }
+    
     useEffect(() => {
         fetchProductDetails();
         fetchProductReviews();
     }, [])
+
+    useEffect(() => {
+        axios.get(base_url + "/users/status?timestamp=" + Date.now().toString(), { withCredentials: true })
+        .then((res) => {
+            setUserState({ "isLoggedIn": true, "user": res.data });
+        })
+        .catch((err) => {
+            setUserState({ "isLoggedIn": false });
+            if (err.status !== 401) {
+                console.error(err);
+            };
+        });
+    }, [location.pathname]);
 
     const handleAddReview = (event) => {
         event.preventDefault();
@@ -41,6 +55,9 @@ export default function ProductPage() {
         if (!validationResult.isValid) {
             alert(validationResult.error);
             return;
+        }
+        if (!userState.user) {
+            alert("You must log in to submit reviews");
         }
         const payload = {
             "product_id": product_id,
@@ -57,7 +74,6 @@ export default function ProductPage() {
 
     const handleBuy = (event) => {
         event.preventDefault();
-        
     }
 
     return (

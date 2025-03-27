@@ -1,8 +1,7 @@
-import React, {useState, useEffect} from "react";
+import React, {useState, useEffect, useContext} from "react";
 
 import './nav_bar.css';
-import {Link} from "react-router-dom";
-import { useAuth } from "../../auth";
+import {Link, useLocation} from "react-router-dom";
 import axios from "axios";
 
 const base_url = "http://localhost:4000/api/v1/users";
@@ -10,7 +9,8 @@ const base_url = "http://localhost:4000/api/v1/users";
 function NavBar() {
     const [scrolled, setNavBar] = useState(false);
     const [smallScreen, setSmall] = useState(false);
-    let {userState, setUserState} = useAuth();
+    const [ userState, setUserState ] = useState({});
+    const location = useLocation();
 
     window.addEventListener("scroll", (event) => {
         if (window.scrollY > 0) setNavBar(true);
@@ -26,22 +26,29 @@ function NavBar() {
 
     useEffect(() => {
         setSize();
+
     }, []);
 
+
     useEffect(() => {
-        axios.get(base_url + "/status", { withCredentials: true })
+        axios.get(base_url + "/status?timestamp=" + Date.now().toString(), { withCredentials: true })
         .then((res) => {
             setUserState({ "isLoggedIn": true, "user": res.data });
         })
         .catch((err) => {
-            console.error(err);
+            setUserState({ "isLoggedIn": false });
+            if (err.status !== 401) {
+                console.error(err);
+            }
         });
-    }, []);
+        
+    }, [location.pathname]);
 
     const handleSignOut = () => {
         axios.get(base_url + "/sign-out", { withCredentials: true })
         .then((res) => {
             setUserState({ "isLoggedIn": false});
+            window.location.reload();
         })
         .catch((err) => {
             console.error(err);

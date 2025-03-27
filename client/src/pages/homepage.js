@@ -1,4 +1,4 @@
-import { checkLoginStatus } from "../auth";
+import React, {useState, useEffect, useContext} from "react";
 import AllProducts from "../components/all_products/all_products";
 
 const HomePage = () => {

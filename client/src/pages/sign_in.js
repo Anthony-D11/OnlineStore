@@ -1,13 +1,16 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from 'axios'
 import $ from 'jquery';
 import validateInput from "../input_validation";
+import { AuthContext } from "../App";
 
 export default function SignIn() {
     const api_url = "http://localhost:4000/api/v1/users/sign-in";
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    const {userState, setUserState} = useContext(AuthContext);
+    
     const navigate = useNavigate();
 
     const handleSignIn = (event) => {
@@ -31,6 +34,7 @@ export default function SignIn() {
                 if (response.status != 200) {
                     throw response.statusText;
                 }
+                setUserState({ "isLoggedIn": true, "user": response.data });
                 setUsername("");
                 setPassword("");
                 alert("Sign in successfully!");
@@ -40,7 +44,7 @@ export default function SignIn() {
             
 
         } catch(error) {
-            console.error(`Error registering user: ${error}`);
+            console.error(`Error signing: ${error}`);
         }
     }
     
