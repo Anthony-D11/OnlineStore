@@ -2,7 +2,7 @@ export default function validateInput (type, input) {
     const result = {isValid: true, error: ""};
     const passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%^&*])[A-Za-z0-9!@#$%^&*]{6,13}$/;
     const usernameRegex = /^[a-zA-Z0-9_-]{6,10}$/;
-    const generalRegex = /^[a-zA-Z0-9 ]{3,}$/;
+    const generalRegex = /^[a-zA-Z0-9,. ]{3,}$/;
     const trimmedInput = typeof input === "string" ? input.trim() : input;
     
 
