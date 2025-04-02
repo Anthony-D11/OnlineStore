@@ -25,27 +25,30 @@ export default function SignIn() {
             alert(validationResult.error);
             return;
         }
-        try {
-            let payload = {
-                "username": username,
-                "password": password
-            }
-            axios.post(api_url, payload, {withCredentials: true}).then((response) => {
-                if (response.status != 200) {
-                    throw response.statusText;
-                }
-                setUserState({ "isLoggedIn": true, "user": response.data });
-                setUsername("");
-                setPassword("");
-                alert("Sign in successfully!");
-                navigate("/");
-                window.location.reload();
-            })
-            
 
-        } catch(error) {
-            console.error(`Error signing: ${error}`);
+        let payload = {
+            "username": username,
+            "password": password
         }
+        axios.post(api_url, payload, {withCredentials: true}).then((response) => {
+            if (response.status !== 200) {
+                throw response;
+            }
+            setUserState({ "isLoggedIn": true, "user": response.data });
+            setUsername("");
+            setPassword("");
+            alert("Sign in successfully!");
+            navigate("/");
+            window.location.reload();
+        }).catch(error => {
+            if(error.status === 401) {
+                alert(`Invalid credentials`);
+            }
+            else {
+                console.log(`Error signing: ${error}`);
+            }
+        })
+            
     }
     
     return (
