@@ -9,7 +9,7 @@ import reviews from "./api/reviews.route.js"
 
 const server = express()
 const corsOptions = {
-    origin: 'http://localhost:3000', 
+    origin: process.env["FRONTEND_URL"],
     credentials: true,            //access-control-allow-credentials:true
     optionSuccessStatus: 200
 }
