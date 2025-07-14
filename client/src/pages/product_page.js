@@ -3,7 +3,7 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import validateInput from "../input_validation";
 
-const base_url = "http://localhost:4000/api/v1"
+const base_url = process.env["REACT_APP_BACKEND_URL"];
 let defaultProductImage = require('../assets/default_product_image.jpg');
 
 

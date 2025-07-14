@@ -9,7 +9,6 @@ import HomePage from './pages/homepage.js';
 import SignIn from './pages/sign_in.js';
 import Register from './pages/register.js';
 import ChangePassword from './pages/change_password.js';
-import { AuthProvider } from './auth.js';
 
 export const AuthContext = createContext();
 function App() {

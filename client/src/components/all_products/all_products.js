@@ -2,8 +2,11 @@ import React, {useEffect, useState} from 'react';
 import Product from '../product/product';
 import './all_products.css'
 import axios from 'axios';
+
 const defaultProductImage = require('../../assets/default_product_image.jpg');
-const base_url = "http://localhost:4000/api/v1/products"
+const base_url = process.env["REACT_APP_BACKEND_URL"];
+console.log(process.env)
+const product_url = base_url + "/products";
 
 class AllProducts extends React.Component {
     constructor(props) {
@@ -48,7 +51,7 @@ class AllProducts extends React.Component {
     }
 
     async fetchProducts() {
-        axios.get(base_url + "/list")
+        axios.get(product_url + "/list")
         .then((res) => {
             this.generateProducts(res.data);
         })  

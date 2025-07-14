@@ -1,4 +1,3 @@
-import React, {useState} from 'react'
 import './product.css'
 
 const Product = ({id, name, image, description, quantity}) => {

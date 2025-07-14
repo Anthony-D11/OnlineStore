@@ -4,7 +4,8 @@ import './nav_bar.css';
 import {Link, useLocation} from "react-router-dom";
 import axios from "axios";
 
-const base_url = "http://localhost:4000/api/v1/users";
+const base_url = process.env["REACT_APP_BACKEND_URL"];
+const user_url = base_url + "/users";
 
 function NavBar() {
     const [scrolled, setNavBar] = useState(false);
@@ -31,7 +32,7 @@ function NavBar() {
 
 
     useEffect(() => {
-        axios.get(base_url + "/status?timestamp=" + Date.now().toString(), { withCredentials: true })
+        axios.get(user_url + "/status?timestamp=" + Date.now().toString(), { withCredentials: true })
         .then((res) => {
             setUserState({ "isLoggedIn": true, "user": res.data });
         })
@@ -45,7 +46,7 @@ function NavBar() {
     }, [location.pathname]);
 
     const handleSignOut = () => {
-        axios.get(base_url + "/sign-out", { withCredentials: true })
+        axios.get(user_url + "/sign-out", { withCredentials: true })
         .then((res) => {
             setUserState({ "isLoggedIn": false});
             window.location.reload();

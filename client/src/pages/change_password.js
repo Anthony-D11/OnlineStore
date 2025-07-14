@@ -5,7 +5,8 @@ import $ from 'jquery';
 import validateInput from "../input_validation";
 
 export default function ChangePassword () {
-    const api_url = "http://localhost:4000/api/v1/users/change-password";
+    const base_url = process.env["REACT_APP_BACKEND_URL"];
+    const api_url = base_url + "/users/change-password";
     const [newPassword, setNewPassword] = useState("");
     const [username, setUsername] = useState("");
     const [oldPassword, setOldPassword] = useState("");

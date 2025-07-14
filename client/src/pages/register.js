@@ -5,7 +5,8 @@ import $ from 'jquery';
 import validateInput from "../input_validation";
 
 function Register () {
-    const api_url = "http://localhost:4000/api/v1/users/register";
+    const base_url = process.env["REACT_APP_BACKEND_URL"];
+    const api_url = base_url + "/users/register";
     const [name, setName] = useState("");
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");

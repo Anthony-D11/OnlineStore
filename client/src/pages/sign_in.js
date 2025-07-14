@@ -6,7 +6,8 @@ import validateInput from "../input_validation";
 import { AuthContext } from "../App";
 
 export default function SignIn() {
-    const api_url = "http://localhost:4000/api/v1/users/sign-in";
+    const base_url = process.env["REACT_APP_BACKEND_URL"];
+    const api_url = base_url + "/v1/users/sign-in";
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const {userState, setUserState} = useContext(AuthContext);
