@@ -8,10 +8,8 @@ import orders from "./api/orders.route.js"
 import reviews from "./api/reviews.route.js"
 
 const server = express()
-console.log(process.env["FRONTEND_URL"])
 const corsOptions = {
-    // origin: process.env["FRONTEND_URL"],
-    origin: "http://localhost:3000",
+    origin: process.env["FRONTEND_URL"],
     credentials: true,            //access-control-allow-credentials:true
     optionSuccessStatus: 200
 }
