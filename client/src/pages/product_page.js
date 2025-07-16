@@ -37,16 +37,18 @@ export default function ProductPage() {
     }, [])
 
     useEffect(() => {
-        axios.get(base_url + "/users/status?timestamp=" + Date.now().toString(), { withCredentials: true })
-        .then((res) => {
-            setUserState({ "isLoggedIn": true, "user": res.data });
-        })
-        .catch((err) => {
-            setUserState({ "isLoggedIn": false });
-            if (err.status !== 401) {
-                console.error(err);
-            };
-        });
+        async function checkLoggedIn() {
+            try {
+                const res = await axios.get(base_url + "/status?timestamp=" + Date.now().toString(), { withCredentials: true })
+                setUserState({ "isLoggedIn": true, "user": res.data });
+            } catch (err) {
+                setUserState({ "isLoggedIn": false });
+                if (err.status !== 401) {
+                    console.error(err);
+                }
+            }
+        }
+        
     }, [location.pathname]);
 
     const handleAddReview = (event) => {
@@ -59,17 +61,19 @@ export default function ProductPage() {
         if (!userState.user) {
             alert("You must log in to submit reviews");
         }
-        const payload = {
-            "product_id": product_id,
-            "username": userState.user.username,
-            "rating": 5,
-            "comment": newReview
+        else {
+            const payload = {
+                "product_id": product_id,
+                "username": userState.user.username,
+                "rating": 5,
+                "comment": newReview
+            }
+            axios.post(base_url + "/reviews/add", payload, {withCredentials: true})
+            .then((res) => {
+                window.location.reload();
+            })
+            .catch((err) => {console.error(err)});
         }
-        axios.post(base_url + "/reviews/add", payload, {withCredentials: true})
-        .then((res) => {
-            window.location.reload();
-        })
-        .catch((err) => {console.error(err)});
     }
 
     const handleBuy = (event) => {

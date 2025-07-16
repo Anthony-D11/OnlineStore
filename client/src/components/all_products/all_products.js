@@ -5,7 +5,6 @@ import axios from 'axios';
 
 const defaultProductImage = require('../../assets/default_product_image.jpg');
 const base_url = process.env["REACT_APP_BACKEND_URL"];
-console.log(process.env)
 const product_url = base_url + "/products";
 
 class AllProducts extends React.Component {

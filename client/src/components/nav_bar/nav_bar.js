@@ -32,16 +32,17 @@ function NavBar() {
 
 
     useEffect(() => {
-        axios.get(user_url + "/status?timestamp=" + Date.now().toString(), { withCredentials: true })
-        .then((res) => {
-            setUserState({ "isLoggedIn": true, "user": res.data });
-        })
-        .catch((err) => {
-            setUserState({ "isLoggedIn": false });
-            if (err.status !== 401) {
-                console.error(err);
+        async function checkLoggedIn() {
+            try {
+                const res = await axios.get(user_url + "/status?timestamp=" + Date.now().toString(), { withCredentials: true })
+                setUserState({ "isLoggedIn": true, "user": res.data });
+            } catch (err) {
+                setUserState({ "isLoggedIn": false });
+                if (err.status !== 401) {
+                    console.error(err);
+                }
             }
-        });
+        }
         
     }, [location.pathname]);
 
